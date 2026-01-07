@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+      <group android:checkableBehavior="single">
+
+          <item
+
+              android:id="@+id/nav_home"
+              android:icon="@drawable/inicio_icon"
+              android:title="Inicio"
+              />
+          <item
+
+              android:id="@+id/nav_perf"
+              android:icon="@drawable/perfil_icon"
+              android:title="Perfil"
+              />
+          <item
+
+              android:id="@+id/nav_cui"
+              android:icon="@drawable/cuidadores"
+              android:title="Cuidadores"
+              />
+          <item
+
+              android:id="@+id/nav_Fav"
+              android:icon="@drawable/preferencias"
+              android:title="Preferencias"
+              />
+          <item
+
+              android:id="@+id/nav_lev"
+              android:icon="@drawable/exit"
+              android:title="Cerrar sesion"
+              />
+
+
+
+
+
+
+      </group>
+</menu>

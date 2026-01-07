@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="32dp"
+    android:background="#FFFFFF">
+
+    <ImageView
+        android:id="@+id/imgIcono"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@android:drawable/checkbox_on_background"
+        android:layout_marginBottom="24dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¡Registro Exitoso!"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#333333"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tu cuenta ha sido creada correctamente en la base de datos."
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:textColor="#666666"
+        android:layout_marginBottom="48dp"/>
+
+    <Button
+        android:id="@+id/btnIrMenu"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Ir al Menú Principal"
+        android:backgroundTint="#2196F3"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp" />
+
+</LinearLayout>

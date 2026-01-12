@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center">
+
+    <EditText
+        android:id="@+id/etNombreDueno"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nombre del dueño"
+        android:inputType="textPersonName"/>
+
+    <EditText
+        android:id="@+id/etNombreMascota"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nombre de la mascota"
+        android:inputType="textPersonName"
+        android:layout_marginTop="12dp"/>
+
+    <EditText
+        android:id="@+id/etRaza"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Raza de la mascota"
+        android:inputType="textPersonName"
+        android:layout_marginTop="12dp"/>
+
+    <EditText
+        android:id="@+id/etTiempoCuidado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tiempo de cuidado (ej. 3 días)"
+        android:inputType="text"
+        android:layout_marginTop="12dp"/>
+
+    <EditText
+        android:id="@+id/etSucursal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Sucursal"
+        android:inputType="text"
+        android:layout_marginTop="12dp"/>
+
+    <Button
+        android:id="@+id/btnRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Registrar"
+        android:layout_marginTop="20dp"/>
+</LinearLayout>

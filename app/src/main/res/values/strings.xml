@@ -6,4 +6,5 @@
     <string name="db_url">jdbc:mysql://192.168.1.50:3306/mi_base_datos</string>
     <string name="db_user">usuario_limitado</string>
     <string name="db_pass">contraseña123</string>
+    <string name="petstay">petstay</string>
 </resources>

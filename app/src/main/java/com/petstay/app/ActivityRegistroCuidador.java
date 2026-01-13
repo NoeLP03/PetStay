@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,11 +23,11 @@ import java.util.Map;
 
 public class ActivityRegistroCuidador extends AppCompatActivity {
 
-    private EditText txtNombre, txtEmail, txtPassword, txtTelefono, txtDireccion, txtINE;
-    private Button btnRegistrar;
-    private ImageView imgFoto;
+    // Deben coincidir con los IDs del XML que pasaste
+    private EditText txtNombre, txtEmail, txtPassword, txtTelefono, txtDireccion;
+    private Button btnRegistrar, btnSeleccionarINE;
+    private ImageView imgINE; // Lo agregamos porque sí existe en tu XML
 
-    // Firebase
     private FirebaseAuth mAuth;
     private FirebaseFirestore mFirestore;
     private StorageReference mStorage;
@@ -43,15 +44,22 @@ public class ActivityRegistroCuidador extends AppCompatActivity {
         mFirestore = FirebaseFirestore.getInstance();
         mStorage = FirebaseStorage.getInstance().getReference("fotos_ine");
 
+        // AQUÍ ESTÁ EL CAMBIO: Usamos los IDs exactos de tu XML
+        txtNombre = findViewById(R.id.editNombre);
+        txtEmail = findViewById(R.id.editEmail);
+        txtPassword = findViewById(R.id.editPassword);
+        txtTelefono = findViewById(R.id.editTelefono);
+        txtDireccion = findViewById(R.id.editDireccionCuidador);
 
-        imgFoto = findViewById(R.id.imgINE);
+        btnSeleccionarINE = findViewById(R.id.btnSeleccionarINE);
         btnRegistrar = findViewById(R.id.btnRegistrar);
+        imgINE = findViewById(R.id.imgINE); // ID correcto del ImageView
 
-
-        imgFoto.setOnClickListener(v -> abrirGaleria());
-
+        btnSeleccionarINE.setOnClickListener(v -> abrirGaleria());
         btnRegistrar.setOnClickListener(view -> validarYRegistrar());
     }
+
+    // ... resto de los métodos (abrirGaleria, subirFotoAFirebase)
 
     private void abrirGaleria() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -63,7 +71,12 @@ public class ActivityRegistroCuidador extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
             imageUri = data.getData();
-            imgFoto.setImageURI(imageUri);
+
+            // Hacemos visible la imagen y la mostramos
+            imgINE.setVisibility(View.VISIBLE);
+            imgINE.setImageURI(imageUri);
+
+            btnSeleccionarINE.setText("CAMBIAR INE");
         }
     }
 
@@ -96,12 +109,16 @@ public class ActivityRegistroCuidador extends AppCompatActivity {
     private void guardarDatosEnFirestore(String id, String urlFoto) {
         Map<String, Object> map = new HashMap<>();
         map.put("nombre", txtNombre.getText().toString());
+        map.put("email", txtEmail.getText().toString()); // Agregado
+        map.put("telefono", txtTelefono.getText().toString()); // Agregado
+        map.put("direccion", txtDireccion.getText().toString()); // Agregado
         map.put("urlIne", urlFoto);
-        map.put("rol", "cuidador");
+        map.put("rol", "cuidador"); // Esto lo identifica en el sistema
 
-        mFirestore.collection("Cuidadores").document(id).set(map)
+        // Usamos la colección "Usuarios" para que todos puedan loguearse igual
+        mFirestore.collection("Usuarios").document(id).set(map)
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(this, "Â¡Cuidador Registrado!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "¡Cuidador Registrado con éxito!", Toast.LENGTH_SHORT).show();
                     finish();
                 });
     }

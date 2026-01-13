@@ -36,6 +36,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
+        drawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.NaviView);
+
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.drawer_layout), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -45,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         drawerLayout = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.NaviView);
         Toolbar toolbar = findViewById(R.id.BarraHe);
 
 
@@ -53,8 +56,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toolbar.setNavigationOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
 
 
-        actualizarMenu(navigationView);
-        actualizarHeader(navigationView);
+
 
 
         navigationView.setNavigationItemSelectedListener(this);
@@ -73,55 +75,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
     }
-    private void actualizarMenu(NavigationView navigationView) {
-        Menu menu = navigationView.getMenu();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
 
-        if (user != null) {
-            menu.findItem(R.id.nav_login).setVisible(false);
-            menu.findItem(R.id.nav_register).setVisible(false);
-            menu.findItem(R.id.nav_logout).setVisible(true);
-        } else {
-            menu.findItem(R.id.nav_login).setVisible(true);
-            menu.findItem(R.id.nav_register).setVisible(true);
-            menu.findItem(R.id.nav_logout).setVisible(false);
-        }
-
-    }
-
-    private void actualizarHeader(NavigationView navigationView) {
-        View headerView = navigationView.getHeaderView(0);
-        TextView tvNombre = headerView.findViewById(R.id.tvHeaderNombre);
-        TextView tvEmail = headerView.findViewById(R.id.tvHeaderEmail);
-        ImageView imgFoto = headerView.findViewById(R.id.imgHeaderFoto);
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        if (user != null) {
-            tvEmail.setText(user.getEmail());
-
-            String userId = user.getUid();
-            FirebaseFirestore.getInstance().collection("Usuarios").document(userId).get()
-                    .addOnSuccessListener(documentSnapshot -> {
-                        if (documentSnapshot.exists()) {
-                            String nombre = documentSnapshot.getString("nombre");
-                            tvNombre.setText(nombre);
-                        } else {
-                            FirebaseFirestore.getInstance().collection("Cuidadores").document(userId).get()
-                                    .addOnSuccessListener(doc -> {
-                                        if (doc.exists()) {
-                                            tvNombre.setText(doc.getString("nombre"));
-                                        }
-                                    });
-                        }
-                    });
-        } else {
-            // Modo Invitado
-            tvNombre.setText("Invitado");
-            tvEmail.setText("Inicia sesión para continuar");
-        }
-    }
 
 
     @Override
@@ -130,32 +85,73 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.nav_home) {
             Toast.makeText(this, "Inicio", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_perf) {
-            Toast.makeText(this, "Perfil", Toast.LENGTH_SHORT).show();
         }
-
-        if (id == R.id.nav_login) {
+        else if (id == R.id.nav_perf) {
+            Intent intent = new Intent(this, ActivityPerfil.class);
+            startActivity(intent);
+        }
+        else if (id == R.id.nav_login) {
             startActivity(new Intent(this, ActivityLogin.class));
-        }
-        else if (id == R.id.nav_register) {
-
-            startActivity(new Intent(this, ActivityRegistroUsuario.class));
-        }
-
-        else if (id == R.id.nav_logout) {
-            FirebaseAuth.getInstance().signOut();
-            finish();
-            startActivity(getIntent());
         }
         else if (id == R.id.nav_register) {
             startActivity(new Intent(this, ActivitySelectionRol.class));
         }
+        else if (id == R.id.nav_logout) {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        }
+
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+    private void cerrarSesion() {
+        FirebaseAuth.getInstance().signOut();
+        Toast.makeText(this, "Sesión cerrada correctamente", Toast.LENGTH_SHORT).show();
 
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
 
+    private void actualizarMenu() {
+        NavigationView navigationView = findViewById(R.id.NaviView);
+        if (navigationView != null) {
+            Menu menu = navigationView.getMenu();
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+            // Buscamos los ítems de forma segura
+            MenuItem loginItem = menu.findItem(R.id.nav_login);
+            MenuItem registerItem = menu.findItem(R.id.nav_register);
+            MenuItem logoutItem = menu.findItem(R.id.nav_logout);
+            MenuItem profileItem = menu.findItem(R.id.nav_perf);
+
+            if (user != null) {
+                // USUARIO LOGUEADO: Ocultar acceso, mostrar salida
+                if (loginItem != null) loginItem.setVisible(false);
+                if (registerItem != null) registerItem.setVisible(false);
+                if (logoutItem != null) logoutItem.setVisible(true);
+                if (profileItem != null) profileItem.setVisible(true);
+            } else {
+                // USUARIO INVITADO: Mostrar acceso, ocultar salida
+                if (loginItem != null) loginItem.setVisible(true);
+                if (registerItem != null) registerItem.setVisible(true);
+                if (logoutItem != null) logoutItem.setVisible(false);
+                if (profileItem != null) profileItem.setVisible(false);
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Esta función se activará cada vez que regreses del Login o Registro
+        actualizarMenu();
+    }
 
 
 }

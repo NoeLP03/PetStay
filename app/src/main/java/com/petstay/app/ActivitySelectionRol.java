@@ -3,6 +3,8 @@ package com.petstay.app;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+
 import com.google.android.material.card.MaterialCardView;
 
 public class ActivitySelectionRol extends AppCompatActivity {
@@ -12,15 +14,20 @@ public class ActivitySelectionRol extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selection_rol);
 
-        MaterialCardView cardUsuario = findViewById(R.id.cardUsuario);
-        MaterialCardView cardCuidador = findViewById(R.id.cardCuidador);
+        // Asegúrate de usar el cast correcto
+        CardView cardUsuario = findViewById(R.id.cardUsuario);
+        CardView cardCuidador = findViewById(R.id.cardCuidador);
 
-        cardUsuario.setOnClickListener(v -> {
-            startActivity(new Intent(this, ActivityRegistroUsuario.class));
-        });
+        if (cardUsuario != null) {
+            cardUsuario.setOnClickListener(v -> {
+                startActivity(new Intent(this, ActivityRegistroUsuario.class));
+            });
+        }
 
-        cardCuidador.setOnClickListener(v -> {
-            startActivity(new Intent(this, ActivityRegistroCuidador.class));
-        });
+        if (cardCuidador != null) {
+            cardCuidador.setOnClickListener(v -> {
+                startActivity(new Intent(this, ActivityRegistroCuidador.class));
+            });
+        }
     }
 }

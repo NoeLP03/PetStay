@@ -24,12 +24,14 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name="com.petstay.app.ActivityRegistroCuidador"
-            android:exported="true"
-            android:theme="@style/Theme.PetStay"/>
-
         <activity android:name="com.petstay.app.ActivityLogin" android:exported="true"/>
+        <activity android:name="com.petstay.app.ActivityRegistroCuidador" android:exported="true"/>
+
+        <activity android:name="com.petstay.app.ActivityRegistroUsuario" android:exported="true"/>
+        <activity android:name="com.petstay.app.ActivitySelectionRol" android:exported="true"/>
+        <activity android:name="com.petstay.app.ActivityRegistroExitoso" android:exported="false" />
+        <activity android:name="com.petstay.app.ActivityForgotPassword" android:exported="false" />
+        <activity android:name="com.petstay.app.ActivityPerfil" android:exported="false" />
     </application>
 
 </manifest>

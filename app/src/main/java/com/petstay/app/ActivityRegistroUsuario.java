@@ -2,6 +2,8 @@ package com.petstay.app;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -86,8 +88,10 @@ public class ActivityRegistroUsuario extends AppCompatActivity {
 
         mFirestore.collection("Usuarios").document(id).set(map)
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(ActivityRegistroUsuario.this, "Â¡Usuario guardado exitosamente!", Toast.LENGTH_SHORT).show();
-                    finish();
+                    // CAMBIO AQUÍ: En lugar de solo el Toast, iniciamos la nueva Activity
+                    Intent intent = new Intent(ActivityRegistroUsuario.this, ActivityRegistroExitoso.class);
+                    startActivity(intent);
+                    finish(); // Cerramos el formulario de registro
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(ActivityRegistroUsuario.this, "Error al guardar datos: " + e.getMessage(), Toast.LENGTH_SHORT).show();

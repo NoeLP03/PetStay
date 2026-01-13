@@ -16,7 +16,7 @@
             android:id="@+id/editNombre"
             android:hint="Nombre completo"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
         <EditText
             android:id="@+id/editEmail"

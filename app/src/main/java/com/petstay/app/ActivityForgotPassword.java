@@ -10,18 +10,23 @@ import com.google.android.material.textfield.TextInputEditText;
 
 public class ActivityForgotPassword extends AppCompatActivity {
 
-    private TextInputEditText etEmail, etPhone;
-    private MaterialButton btnVerify;
+    // Cambiamos TextInputEditText por AppCompatEditText
+    private androidx.appcompat.widget.AppCompatEditText etEmail, etPhone;
+
+    // Cambiamos MaterialButton por Button normal
+    private android.widget.Button btnVerify;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
 
+        // Ahora estos findViewById sí encontrarán el tipo de vista correcto
         etEmail = findViewById(R.id.et_email_recovery);
         etPhone = findViewById(R.id.et_phone_recovery);
         btnVerify = findViewById(R.id.btn_send_recovery);
 
+        // La línea roja debería desaparecer después de un "Rebuild Project"
         btnVerify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,9 +54,14 @@ public class ActivityForgotPassword extends AppCompatActivity {
     }
 
     private void enviarSolicitud(String email, String phone) {
-        // Aquí conectarías con tu base de datos o API
-        Toast.makeText(this, "Verificando datos para: " + email, Toast.LENGTH_LONG).show();
-
-        // Ejemplo: Si los datos son correctos, podrías enviar un código SMS o email
+        com.google.firebase.auth.FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(this, "Correo de recuperación enviado", Toast.LENGTH_SHORT).show();
+                        finish(); // Regresa al Login automáticamente
+                    } else {
+                        Toast.makeText(this, "Error: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 }

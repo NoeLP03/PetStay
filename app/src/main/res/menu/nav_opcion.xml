@@ -4,9 +4,9 @@
 
           <item
 
-              android:id="@+id/nav_home"
-              android:icon="@drawable/inicio_icon"
-              android:title="Inicio"
+              android:id="@+id/nav_login"
+              android:icon="@drawable/ic_login"
+              android:title="Iniciar Sesión"
               />
           <item
 
@@ -28,12 +28,20 @@
               />
           <item
 
-              android:id="@+id/nav_lev"
-              android:icon="@drawable/exit"
-              android:title="Cerrar sesion"
+              android:id="@+id/nav_logout"
+              android:icon="@drawable/ic_logout"
+              android:title="Cerrar Sesión"
+              android:visible="false"
+              />
+          <item
+              android:id="@+id/nav_home"
+              android:title="Inicio"
               />
 
-
+          <item
+              android:id="@+id/nav_register"
+              android:title="Registrarse"
+              />
 
 
 

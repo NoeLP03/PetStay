@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mi Perfil"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="30dp"/>
+
+    <TextView
+        android:id="@+id/tv_nombre_perfil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nombre: Cargando..."
+        android:padding="10dp"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/tv_email_perfil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Email: Cargando..."
+        android:padding="10dp"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/tv_phone_perfil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Teléfono: Cargando..."
+        android:padding="10dp"
+        android:textSize="18sp"/>
+
+    <Button
+        android:id="@+id/btn_cerrar_perfil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="VOLVER"
+        android:backgroundTint="#2196F3"
+        android:textColor="#FFFFFF"/>
+
+</LinearLayout>

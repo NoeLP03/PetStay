@@ -103,6 +103,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(intent);
             finish();
         }
+        else if (id == R.id.nav_cita) { // El ID que le hayas puesto en nav_menu.xml
+            startActivity(new Intent(this, ActivityCita.class));
+        }
 
 
         drawerLayout.closeDrawer(GravityCompat.START);

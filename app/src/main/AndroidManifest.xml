@@ -32,6 +32,7 @@
         <activity android:name="com.petstay.app.ActivityRegistroExitoso" android:exported="false" />
         <activity android:name="com.petstay.app.ActivityForgotPassword" android:exported="false" />
         <activity android:name="com.petstay.app.ActivityPerfil" android:exported="false" />
+        <activity android:name="com.petstay.app.ActivityCita" android:exported="false" />
     </application>
 
 </manifest>

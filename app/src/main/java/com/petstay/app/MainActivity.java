@@ -1,7 +1,12 @@
 package com.petstay.app;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -16,10 +21,14 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +49,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = findViewById(R.id.BarraHe);
 
 
+
         toolbar.setNavigationOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
+
+
+        actualizarMenu(navigationView);
+        actualizarHeader(navigationView);
 
 
         navigationView.setNavigationItemSelectedListener(this);
@@ -59,6 +73,55 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
     }
+    private void actualizarMenu(NavigationView navigationView) {
+        Menu menu = navigationView.getMenu();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+
+        if (user != null) {
+            menu.findItem(R.id.nav_login).setVisible(false);
+            menu.findItem(R.id.nav_register).setVisible(false);
+            menu.findItem(R.id.nav_logout).setVisible(true);
+        } else {
+            menu.findItem(R.id.nav_login).setVisible(true);
+            menu.findItem(R.id.nav_register).setVisible(true);
+            menu.findItem(R.id.nav_logout).setVisible(false);
+        }
+
+    }
+
+    private void actualizarHeader(NavigationView navigationView) {
+        View headerView = navigationView.getHeaderView(0);
+        TextView tvNombre = headerView.findViewById(R.id.tvHeaderNombre);
+        TextView tvEmail = headerView.findViewById(R.id.tvHeaderEmail);
+        ImageView imgFoto = headerView.findViewById(R.id.imgHeaderFoto);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+            tvEmail.setText(user.getEmail());
+
+            String userId = user.getUid();
+            FirebaseFirestore.getInstance().collection("Usuarios").document(userId).get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            String nombre = documentSnapshot.getString("nombre");
+                            tvNombre.setText(nombre);
+                        } else {
+                            FirebaseFirestore.getInstance().collection("Cuidadores").document(userId).get()
+                                    .addOnSuccessListener(doc -> {
+                                        if (doc.exists()) {
+                                            tvNombre.setText(doc.getString("nombre"));
+                                        }
+                                    });
+                        }
+                    });
+        } else {
+            // Modo Invitado
+            tvNombre.setText("Invitado");
+            tvEmail.setText("Inicia sesión para continuar");
+        }
+    }
 
 
     @Override
@@ -71,10 +134,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Toast.makeText(this, "Perfil", Toast.LENGTH_SHORT).show();
         }
 
+        if (id == R.id.nav_login) {
+            startActivity(new Intent(this, ActivityLogin.class));
+        }
+        else if (id == R.id.nav_register) {
+
+            startActivity(new Intent(this, ActivityRegistroUsuario.class));
+        }
+
+        else if (id == R.id.nav_logout) {
+            FirebaseAuth.getInstance().signOut();
+            finish();
+            startActivity(getIntent());
+        }
+        else if (id == R.id.nav_register) {
+            startActivity(new Intent(this, ActivitySelectionRol.class));
+        }
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 
 
 }

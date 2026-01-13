@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home"
+        android:title="Inicio" />
+
+    <item android:title="Cuenta">
+        <menu>
+            <item
+                android:id="@+id/nav_login"
+                android:icon="@drawable/ic_login"
+                android:title="Iniciar Sesión" />
+            <item
+                android:id="@+id/nav_register"
+                android:icon="@drawable/ic_person_add"
+                android:title="Registrarse" />
+
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_logout"
+                android:title="Cerrar Sesión"
+                android:visible="false" />
+        </menu>
+    </item>
+
+</menu>

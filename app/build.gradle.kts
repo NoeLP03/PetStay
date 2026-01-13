@@ -43,6 +43,8 @@ android {
 }
 
 dependencies {
+    implementation (platform("com.google.firebase:firebase-bom:33.1.0"))
+    implementation("com.google.firebase:firebase-storage")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("com.google.android.gms:play-services-maps:18.2.0")

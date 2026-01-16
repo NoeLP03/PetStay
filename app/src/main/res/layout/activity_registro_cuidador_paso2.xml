@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="#FFFFFF">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Preferencias de Cuidado"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="30dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¿Qué tipo de mascotas cuidas?"
+        android:textStyle="bold"/>
+    <Spinner
+        android:id="@+id/spinnerTipoMascota"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Capacidad máxima de mascotas:"
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"/>
+    <Spinner
+        android:id="@+id/spinnerCantidad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tamaño máximo que aceptas:"
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"/>
+    <Spinner
+        android:id="@+id/spinnerTamano"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="40dp">
+
+        <Button
+            android:id="@+id/btnRegresar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Regresar"
+            android:layout_marginEnd="5dp"
+            android:backgroundTint="#808080"/>
+
+        <Button
+            android:id="@+id/btnFinalizarRegistro"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Finalizar"
+            android:layout_marginStart="5dp"
+            android:backgroundTint="#8D1C1C"/>
+    </LinearLayout>
+</LinearLayout>

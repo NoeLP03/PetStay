@@ -1,70 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.petstay.app.ActivityRegistroCuidador">
+    android:background="#FFFFFF">
 
     <LinearLayout
-        android:orientation="vertical"
-        android:padding="20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Registro de Cuidador - Datos Personales"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="15dp"
+            android:gravity="center"/>
 
         <EditText
             android:id="@+id/editNombre"
-            android:hint="Nombre completo"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:hint="Nombre completo" />
 
         <EditText
             android:id="@+id/editEmail"
-            android:hint="Correo electrónico"
-            android:inputType="textEmailAddress"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:hint="Correo electrónico"
+            android:inputType="textEmailAddress" />
 
         <EditText
             android:id="@+id/editPassword"
-            android:hint="Contraseña"
-            android:inputType="textPassword"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:hint="Contraseña"
+            android:inputType="textPassword" />
 
         <EditText
             android:id="@+id/editTelefono"
-            android:hint="Teléfono"
-            android:inputType="phone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <EditText
-            android:id="@+id/editDireccionCuidador"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Dirección"/>
+            android:hint="Teléfono"
+            android:inputType="phone" />
 
-        <Button
-            android:id="@+id/btnSeleccionarINE"
-            android:text="Seleccionar INE"
+        <EditText
+            android:id="@+id/editCurp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:hint="CURP (18 caracteres)"
+            android:maxLength="18"
+            android:inputType="textCapCharacters" />
 
-        <ImageView
-            android:id="@+id/imgINE"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_gravity="center"
-            android:scaleType="centerCrop"
-            android:visibility="gone" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ubicación"
+            android:textStyle="bold"
+            android:layout_marginTop="15dp"/>
+
+        <Spinner
+            android:id="@+id/spinnerCiudad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp" />
+
+        <EditText
+            android:id="@+id/editColonia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Colonia o Fraccionamiento" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editCalle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:hint="Calle" />
+
+            <EditText
+                android:id="@+id/editNumeroCasa"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="No."
+                android:inputType="number" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/editCP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Código Postal"
+            android:inputType="number"
+            android:maxLength="5" />
 
         <Button
             android:id="@+id/btnRegistrar"
-            android:text="Registrar Cuidador"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="20dp"
+            android:text="SIGUIENTE"
+            android:backgroundTint="#8D1C1C"
+            android:textColor="#FFFFFF"/>
 
     </LinearLayout>
 </ScrollView>

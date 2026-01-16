@@ -1,54 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp"
-    android:gravity="center">
+    android:background="#FFFFFF">
 
-    <EditText
-        android:id="@+id/etNombreDueno"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Nombre del dueño"
-        android:inputType="textPersonName"/>
+        android:orientation="vertical"
+        android:padding="24dp">
 
-    <EditText
-        android:id="@+id/etNombreMascota"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Nombre de la mascota"
-        android:inputType="textPersonName"
-        android:layout_marginTop="12dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Agendar Cita de Cuidado"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="20dp"/>
 
-    <EditText
-        android:id="@+id/etRaza"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Raza de la mascota"
-        android:inputType="textPersonName"
-        android:layout_marginTop="12dp"/>
+        <EditText
+            android:id="@+id/etNombreDueno"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nombre del dueño"
+            android:enabled="false"
+            android:inputType="textPersonName"/>
 
-    <EditText
-        android:id="@+id/etTiempoCuidado"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Tiempo de cuidado (ej. 3 días)"
-        android:inputType="text"
-        android:layout_marginTop="12dp"/>
+        <EditText
+            android:id="@+id/etNombreMascota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nombre de la mascota"
+            android:layout_marginTop="12dp"/>
 
-    <EditText
-        android:id="@+id/etSucursal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Sucursal"
-        android:inputType="text"
-        android:layout_marginTop="12dp"/>
+        <EditText
+            android:id="@+id/etRaza"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Raza de la mascota"
+            android:layout_marginTop="12dp"/>
 
-    <Button
-        android:id="@+id/btnRegister"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Registrar"
-        android:layout_marginTop="20dp"/>
-</LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tipo de Mascota:"
+            android:layout_marginTop="15dp"
+            android:textStyle="bold"/>
+        <Spinner
+            android:id="@+id/spinnerTipoCita"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tamaño de la mascota:"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"/>
+        <Spinner
+            android:id="@+id/spinnerTamanoCita"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¿Cuántas mascotas son?"
+            android:layout_marginTop="15dp"
+            android:textStyle="bold"/>
+
+        <Spinner
+            android:id="@+id/spinnerCantidadMascotas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp" />
+
+        <EditText
+            android:id="@+id/etTiempoCuidado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Tiempo de cuidado (ej. 3 días)"
+            android:layout_marginTop="12dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Selecciona un Cuidador disponible:"
+            android:layout_marginTop="15dp"
+            android:textColor="#8D1C1C"
+            android:textStyle="bold"/>
+        <Spinner
+            android:id="@+id/spinnerCuidador"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp" />
+
+        <TextView
+            android:id="@+id/tvAvisoNoDisponible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No hay cuidadores que acepten este tipo/tamaño de mascota."
+            android:textColor="#FF0000"
+            android:textSize="12sp"
+            android:visibility="gone"
+            android:layout_marginTop="5dp"
+            android:gravity="center"/>
+
+        <EditText
+            android:id="@+id/etFechaCita"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Seleccionar fecha de la cita"
+            android:focusable="false"
+            android:clickable="true"
+            android:layout_marginTop="12dp"
+            android:drawableEnd="@android:drawable/ic_menu_my_calendar"/>
+
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="AGENDAR CITA"
+            android:layout_marginTop="30dp"
+            android:backgroundTint="#8D1C1C"
+            android:textColor="#FFFFFF"/>
+
+    </LinearLayout>
+</ScrollView>

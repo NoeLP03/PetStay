@@ -175,11 +175,15 @@ public class ActivityCita extends AppCompatActivity {
         String idCuidador = listaIdsCuidadores.get(pos);
         String nombreCuidador = spinnerCuidador.getSelectedItem().toString();
         String cantidad = spinnerCantidad.getSelectedItem().toString();
+        String emailDueno = mAuth.getCurrentUser().getEmail();
+        String emailCuidador = "";
 
         Map<String, Object> cita = new HashMap<>();
         cita.put("fechaCita", etFechaCita.getText().toString());
         cita.put("idDueno", idDueno);
         cita.put("nombreDueno", etNombreDueno.getText().toString());
+        cita.put("emailDueno", emailDueno); // Guardamos email del dueño
+        cita.put("emailCuidador", emailCuidador); // Guardamos email del cuidador
         cita.put("idCuidador", idCuidador);
         cita.put("nombreCuidador", nombreCuidador);
         cita.put("nombreMascota", mascota);
@@ -191,6 +195,13 @@ public class ActivityCita extends AppCompatActivity {
         cita.put("estado", "pendiente");
 
         mFirestore.collection("Citas").add(cita).addOnSuccessListener(documentReference -> {
+            // AQUÍ LLAMAREMOS A LA FUNCIÓN DE CORREO
+            String emailC = ""; // Aquí deberías obtener el email del cuidador seleccionado
+            String mensaje = "Hola, tienes una nueva solicitud de " + etNombreDueno.getText().toString() +
+                    " para cuidar a su mascota: " + mascota;
+
+            enviarCorreoNotificacion(emailC, "Nueva Solicitud de Cita - PetStay", mensaje);
+
             Toast.makeText(this, "Cita enviada exitosamente", Toast.LENGTH_SHORT).show();
             finish();
         });
@@ -200,5 +211,19 @@ public class ActivityCita extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, opciones);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+    }
+
+    private void enviarCorreoNotificacion(String destinatario, String asunto, String mensaje) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{destinatario});
+        intent.putExtra(Intent.EXTRA_SUBJECT, asunto);
+        intent.putExtra(Intent.EXTRA_TEXT, mensaje);
+        intent.setType("message/rfc822");
+
+        try {
+            startActivity(Intent.createChooser(intent, "Enviando notificación..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(this, "No tienes aplicaciones de correo instaladas.", Toast.LENGTH_SHORT).show();
+        }
     }
 }

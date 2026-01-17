@@ -47,6 +47,14 @@ public class ActivityRegistroCuidador extends AppCompatActivity {
     }
 
     private boolean validarCampos() {
+        String email = txtEmail.getText().toString().trim();
+        String pass = txtPassword.getText().toString().trim();
+
+        if (txtNombre.getText().toString().isEmpty() || email.isEmpty() || pass.length() < 6) {
+            Toast.makeText(this, "Nombre, email y contraseña (6 caracteres) son obligatorios", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
         if (txtNombre.getText().toString().isEmpty() || txtCurp.getText().toString().length() < 18) {
             Toast.makeText(this, "Por favor revisa el nombre y que la CURP tenga 18 caracteres", Toast.LENGTH_SHORT).show();
             return false;

@@ -34,6 +34,7 @@
         <activity android:name="com.petstay.app.ActivityPerfil" android:exported="false" />
         <activity android:name="com.petstay.app.ActivityCita" android:exported="false" />
         <activity android:name="com.petstay.app.ActivityRegistroCuidadorPaso2" />
+        <activity android:name="com.petstay.app.ActivityListaCuidadores" android:exported="false" />
     </application>
 
 </manifest>

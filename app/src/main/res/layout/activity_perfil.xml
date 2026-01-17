@@ -1,50 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="20dp"
-    android:gravity="center_horizontal">
+    android:background="#F8F9FA">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Mi Perfil"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="30dp"/>
-
-    <TextView
-        android:id="@+id/tv_nombre_perfil"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nombre: Cargando..."
-        android:padding="10dp"
-        android:textSize="18sp"/>
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_horizontal">
 
-    <TextView
-        android:id="@+id/tv_email_perfil"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Email: Cargando..."
-        android:padding="10dp"
-        android:textSize="18sp"/>
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="30dp"
+            android:src="@android:drawable/ic_menu_myplaces"
+            app:tint="#8D1C1C" />
 
-    <TextView
-        android:id="@+id/tv_phone_perfil"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Teléfono: Cargando..."
-        android:padding="10dp"
-        android:textSize="18sp"/>
+        <TextView
+            android:id="@+id/tv_nombre_grande"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombre del Usuario"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#212121"
+            android:layout_marginTop="10dp"/>
 
-    <Button
-        android:id="@+id/btn_cerrar_perfil"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="VOLVER"
-        android:backgroundTint="#2196F3"
-        android:textColor="#FFFFFF"/>
+        <TextView
+            android:id="@+id/tv_rol_etiqueta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Usuario Registrado"
+            android:textColor="#666666"
+            android:textSize="14sp"
+            android:layout_marginBottom="40dp"
+            android:textAllCaps="true"
+            android:letterSpacing="0.1"/>
 
-</LinearLayout>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            android:layout_marginBottom="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nombre Completo"
+                    android:textSize="12sp"
+                    android:textColor="#8D1C1C"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/tv_nombre_perfil"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cargando..."
+                    android:textSize="17sp"
+                    android:textColor="#333333"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="4dp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#EEEEEE"
+                    android:layout_marginBottom="16dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Correo Electrónico"
+                    android:textSize="12sp"
+                    android:textColor="#8D1C1C"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/tv_email_perfil"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cargando..."
+                    android:textSize="17sp"
+                    android:textColor="#333333"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="4dp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#EEEEEE"
+                    android:layout_marginBottom="16dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Número de Teléfono"
+                    android:textSize="12sp"
+                    android:textColor="#8D1C1C"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/tv_phone_perfil"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cargando..."
+                    android:textSize="17sp"
+                    android:textColor="#333333"
+                    android:layout_marginTop="4dp"/>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/btn_cerrar_perfil"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="VOLVER"
+            android:backgroundTint="#8D1C1C"
+            app:cornerRadius="12dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:elevation="4dp"
+            android:textColor="#FFFFFF"/>
+
+    </LinearLayout>
+</ScrollView>

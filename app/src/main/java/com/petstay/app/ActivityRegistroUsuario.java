@@ -17,7 +17,6 @@ import java.util.Map;
 
 public class ActivityRegistroUsuario extends AppCompatActivity {
 
-    private ImageView imgFotoUsuario;
     private EditText editNombreUsuario;
     private EditText editEmailUsuario;
     private EditText editPasswordUsuario;
@@ -38,7 +37,6 @@ public class ActivityRegistroUsuario extends AppCompatActivity {
         mFirestore = FirebaseFirestore.getInstance();
 
         // Inicializar Vistas
-        imgFotoUsuario = findViewById(R.id.imgFotoUsuario);
         editNombreUsuario = findViewById(R.id.editNombreUsuario);
         editEmailUsuario = findViewById(R.id.editEmailUsuario);
         editPasswordUsuario = findViewById(R.id.editPasswordUsuario);

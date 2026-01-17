@@ -22,12 +22,6 @@
               />
           <item
 
-              android:id="@+id/nav_Fav"
-              android:icon="@drawable/preferencias"
-              android:title="Preferencias"
-              />
-          <item
-
               android:id="@+id/nav_logout"
               android:icon="@drawable/ic_logout"
               android:title="Cerrar Sesión"

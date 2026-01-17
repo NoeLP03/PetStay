@@ -1,5 +1,6 @@
 package com.petstay.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -28,6 +29,8 @@ public class ActivityCita extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private List<String> listaIdsCuidadores = new ArrayList<>();
 
+    private String nombreRecibidoDeLista;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +39,8 @@ public class ActivityCita extends AppCompatActivity {
         mFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
-        // Vincular vistas
+        nombreRecibidoDeLista = getIntent().getStringExtra("nombre_cuidador");
+
         etFechaCita = findViewById(R.id.etFechaCita);
         etFechaCita.setOnClickListener(v -> mostrarCalendario());
         etNombreDueno = findViewById(R.id.etNombreDueno);
@@ -48,17 +52,14 @@ public class ActivityCita extends AppCompatActivity {
         spinnerCuidador = findViewById(R.id.spinnerCuidador);
         tvAvisoNoDisponible = findViewById(R.id.tvAvisoNoDisponible);
         btnRegister = findViewById(R.id.btnRegister);
+        spinnerCantidad = findViewById(R.id.spinnerCantidadMascotas);
 
-        // 1. Cargar nombre del usuario logueado automáticamente
         cargarNombreUsuario();
 
-        // 2. Llenar selectores de tipo y tamaño
         llenarSpinner(spinnerTipo, new String[]{"Perro", "Gato"});
         llenarSpinner(spinnerTamano, new String[]{"Pequeño", "Mediano", "Grande"});
-        spinnerCantidad = findViewById(R.id.spinnerCantidadMascotas);
         llenarSpinner(spinnerCantidad, new String[]{"1", "2", "3", "4", "5"});
 
-        // 3. Listener para buscar cuidadores cada que cambie una opción
         AdapterView.OnItemSelectedListener filtroListener = new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> p, View v, int pos, long id) {
@@ -80,12 +81,10 @@ public class ActivityCita extends AppCompatActivity {
         int dia = cal.get(java.util.Calendar.DAY_OF_MONTH);
 
         android.app.DatePickerDialog dpd = new android.app.DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
-            // Formato de fecha: DD/MM/AAAA
             String fechaSeleccionada = dayOfMonth + "/" + (month + 1) + "/" + year;
             etFechaCita.setText(fechaSeleccionada);
         }, anio, mes, dia);
 
-        // Opcional: Impedir que seleccionen fechas pasadas
         dpd.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
         dpd.show();
     }
@@ -113,10 +112,10 @@ public class ActivityCita extends AppCompatActivity {
                     listaIdsCuidadores.clear();
 
                     for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                        String acepta = doc.getString("acepta"); // Perro, Gato, Ambos
-                        String tamanoMax = doc.getString("tamanoMax"); // Pequeño, Mediano, Grande
+                        String acepta = doc.getString("acepta");
+                        String tamanoMax = doc.getString("tamanoMax");
 
-                        boolean tipoOk = acepta.equals(tipoBuscado) || acepta.equals("Ambos");
+                        boolean tipoOk = acepta != null && (acepta.equals(tipoBuscado) || acepta.equals("Ambos"));
                         if (tipoOk && esCompatible(tamanoBuscado, tamanoMax)) {
                             nombresCuidadores.add(doc.getString("nombre") + " (" + doc.getString("ciudad") + ")");
                             listaIdsCuidadores.add(doc.getId());
@@ -134,24 +133,37 @@ public class ActivityCita extends AppCompatActivity {
                             android.R.layout.simple_spinner_item, nombresCuidadores);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinnerCuidador.setAdapter(adapter);
+
+                    if (nombreRecibidoDeLista != null) {
+                        for (int i = 0; i < nombresCuidadores.size(); i++) {
+                            if (nombresCuidadores.get(i).contains(nombreRecibidoDeLista)) {
+                                spinnerCuidador.setSelection(i);
+                                // Lo limpiamos para que no se re-seleccione si el usuario cambia el filtro manualmente después
+                                nombreRecibidoDeLista = null;
+                                break;
+                            }
+                        }
+                    }
                 });
     }
 
     private boolean esCompatible(String miMascota, String capacidadMax) {
         if (capacidadMax == null) return false;
-        // Lógica de jerarquía:
-        if (capacidadMax.equals("Grande")) return true; // Acepta todos
-        if (capacidadMax.equals("Mediano")) return !miMascota.equals("Grande"); // Acepta med y peq
-        return miMascota.equals("Pequeño"); // Solo acepta pequeños
+        if (capacidadMax.equals("Grande")) return true;
+        if (capacidadMax.equals("Mediano")) return !miMascota.equals("Grande");
+        return miMascota.equals("Pequeño");
     }
 
     private void validarYRegistrarCita() {
         String mascota = etNombreMascota.getText().toString().trim();
         String raza = etRaza.getText().toString().trim();
         String tiempo = etTiempoCuidado.getText().toString().trim();
+        String fecha = etFechaCita.getText().toString().trim();
 
-        if (listaIdsCuidadores.isEmpty() || mascota.isEmpty() || raza.isEmpty() || tiempo.isEmpty()) {
-            Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show();
+        if (listaIdsCuidadores.isEmpty() || mascota.isEmpty() || raza.isEmpty() || tiempo.isEmpty() || fecha.isEmpty()) {
+            Toast.makeText(this, "Completa todos los campos, incluyendo la fecha", Toast.LENGTH_SHORT).show();
+        } else if (spinnerCuidador.getSelectedItem().toString().equals("Sin cuidadores disponibles")) {
+            Toast.makeText(this, "No hay cuidadores válidos para estos filtros", Toast.LENGTH_SHORT).show();
         } else {
             registrarCitaEnFirestore(mascota, raza, tiempo);
         }
@@ -159,10 +171,9 @@ public class ActivityCita extends AppCompatActivity {
 
     private void registrarCitaEnFirestore(String mascota, String raza, String tiempo) {
         String idDueno = mAuth.getCurrentUser().getUid();
-        String idCuidador = listaIdsCuidadores.get(spinnerCuidador.getSelectedItemPosition());
+        int pos = spinnerCuidador.getSelectedItemPosition();
+        String idCuidador = listaIdsCuidadores.get(pos);
         String nombreCuidador = spinnerCuidador.getSelectedItem().toString();
-
-        // Obtenemos el valor del nuevo Spinner
         String cantidad = spinnerCantidad.getSelectedItem().toString();
 
         Map<String, Object> cita = new HashMap<>();
@@ -173,7 +184,7 @@ public class ActivityCita extends AppCompatActivity {
         cita.put("nombreCuidador", nombreCuidador);
         cita.put("nombreMascota", mascota);
         cita.put("raza", raza);
-        cita.put("cantidadMascotas", cantidad); // <-- Nuevo campo guardado
+        cita.put("cantidadMascotas", cantidad);
         cita.put("tipoMascota", spinnerTipo.getSelectedItem().toString());
         cita.put("tamanoMascota", spinnerTamano.getSelectedItem().toString());
         cita.put("tiempoCuidado", tiempo);

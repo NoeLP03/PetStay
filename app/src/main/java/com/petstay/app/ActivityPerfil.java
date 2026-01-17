@@ -10,7 +10,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ActivityPerfil extends AppCompatActivity {
 
-    private TextView tvNombre, tvEmail, tvPhone;
+    // Añadimos las nuevas variables para el encabezado
+    private TextView tvNombre, tvEmail, tvPhone, tvNombreGrande, tvRolEtiqueta;
     private FirebaseFirestore mFirestore;
     private FirebaseAuth mAuth;
 
@@ -22,21 +23,25 @@ public class ActivityPerfil extends AppCompatActivity {
         mFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
+        // Vinculamos todos los IDs, incluidos los nuevos del diseño profesional
+        tvNombreGrande = findViewById(R.id.tv_nombre_grande);
+        tvRolEtiqueta = findViewById(R.id.tv_rol_etiqueta);
+
         tvNombre = findViewById(R.id.tv_nombre_perfil);
         tvEmail = findViewById(R.id.tv_email_perfil);
         tvPhone = findViewById(R.id.tv_phone_perfil);
+
         Button btnVolver = findViewById(R.id.btn_cerrar_perfil);
 
         obtenerDatosUsuario();
 
+        // Configuramos el botón para volver
         btnVolver.setOnClickListener(v -> finish());
-        // Dentro del onCreate de tu ActivityPerfil
-        btnVolver.setOnClickListener(v -> {
-            finish(); // Esto te regresa al MainActivity y activará el onResume que acabas de crear
-        });
     }
 
     private void obtenerDatosUsuario() {
+        if (mAuth.getCurrentUser() == null) return;
+
         String id = mAuth.getCurrentUser().getUid();
         mFirestore.collection("Usuarios").document(id).get()
                 .addOnSuccessListener(documentSnapshot -> {
@@ -44,12 +49,25 @@ public class ActivityPerfil extends AppCompatActivity {
                         String nombre = documentSnapshot.getString("nombre");
                         String email = documentSnapshot.getString("email");
                         String telefono = documentSnapshot.getString("telefono");
+                        String rol = documentSnapshot.getString("rol");
 
-                        tvNombre.setText("Nombre: " + nombre);
-                        tvEmail.setText("Email: " + email);
-                        tvPhone.setText("Teléfono: " + telefono);
+                        // Actualizamos el encabezado
+                        tvNombreGrande.setText(nombre != null ? nombre : "Usuario");
+
+                        // Mostramos el rol de forma elegante (Primera letra Mayúscula)
+                        if (rol != null) {
+                            tvRolEtiqueta.setText("Perfil: " + rol.toUpperCase());
+                        }
+
+                        // Actualizamos los datos dentro de la tarjeta (sin el prefijo "Nombre: "
+                        // porque el diseño nuevo ya tiene etiquetas arriba)
+                        tvNombre.setText(nombre);
+                        tvEmail.setText(email);
+                        tvPhone.setText(telefono);
                     }
                 })
-                .addOnFailureListener(e -> Toast.makeText(this, "Error al cargar datos", Toast.LENGTH_SHORT).show());
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Error al cargar datos", Toast.LENGTH_SHORT).show();
+                });
     }
 }

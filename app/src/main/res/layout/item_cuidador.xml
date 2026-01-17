@@ -1,0 +1,41 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="3dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/txtNombreCuidador"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombre Cuidador"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#212121"/>
+
+        <TextView
+            android:id="@+id/txtCiudadCuidador"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ciudad"
+            android:textColor="#666666"/>
+
+        <TextView
+            android:id="@+id/txtDetallesCuidador"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Acepta: Perros | Capacidad: 3"
+            android:textSize="13sp"
+            android:layout_marginTop="5dp"
+            android:textColor="#8D1C1C"/>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

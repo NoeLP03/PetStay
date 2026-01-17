@@ -39,8 +39,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.NaviView);
 
-
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.drawer_layout), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -50,14 +48,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         drawerLayout = findViewById(R.id.drawer_layout);
         Toolbar toolbar = findViewById(R.id.BarraHe);
-
-
-
         toolbar.setNavigationOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
-
-
-
-
 
         navigationView.setNavigationItemSelectedListener(this);
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
@@ -75,10 +66,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
     }
-
-
-
-
+    
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -105,6 +93,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else if (id == R.id.nav_cita) { // El ID que le hayas puesto en nav_menu.xml
             startActivity(new Intent(this, ActivityCita.class));
+        }
+        else if (id == R.id.nav_cui) { // Cambia el ID por el que tengas en tu menu.xml
+            Intent intent = new Intent(MainActivity.this, ActivityListaCuidadores.class);
+            startActivity(intent);
         }
 
 

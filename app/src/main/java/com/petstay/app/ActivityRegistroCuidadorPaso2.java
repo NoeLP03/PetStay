@@ -76,14 +76,17 @@ public class ActivityRegistroCuidadorPaso2 extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         String uid = mAuth.getCurrentUser().getUid();
                         Map<String, Object> map = new HashMap<>();
+
+                        // --- DATOS DEL PASO 1 ---
                         map.put("nombre", datos.getString("nombre"));
+                        map.put("email", datos.getString("email")); // <--- ¡ESTA LÍNEA HACÍA FALTA!
                         map.put("curp", datos.getString("curp"));
                         map.put("telefono", datos.getString("telefono"));
                         map.put("ciudad", datos.getString("ciudad"));
                         map.put("direccion", datos.getString("calle") + " #" + datos.getString("numeroCasa") + ", " + datos.getString("colonia"));
                         map.put("rol", "cuidador");
 
-                        // Datos del paso 2
+                        // --- DATOS DEL PASO 2 ---
                         map.put("acepta", spinnerTipo.getSelectedItem().toString());
                         map.put("capacidad", spinnerCantidad.getSelectedItem().toString());
                         map.put("tamanoMax", spinnerTamano.getSelectedItem().toString());
@@ -94,6 +97,9 @@ public class ActivityRegistroCuidadorPaso2 extends AppCompatActivity {
                                     startActivity(new Intent(this, MainActivity.class));
                                     finishAffinity();
                                 });
+                    } else {
+                        // Es bueno agregar un error por si el correo ya existe
+                        Toast.makeText(this, "Error: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
     }

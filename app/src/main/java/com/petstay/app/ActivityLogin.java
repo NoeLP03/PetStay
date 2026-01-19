@@ -6,14 +6,14 @@ import android.widget.Button;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
-import com.google.android.material.button.MaterialButton; // Asegúrate de este import
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class ActivityLogin extends AppCompatActivity {
 
     private AppCompatEditText etEmail, etPassword;
     private android.widget.Button btnLogin;
-    private Button btnForgot;         // El de "olvidaste contraseña" es un Button normal en tu XML
+    private Button btnForgot, btnSaltar;
     private FirebaseAuth mAuth;
 
     @Override
@@ -23,13 +23,12 @@ public class ActivityLogin extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        // 1. Vinculación con los IDs EXACTOS de tu XML
+        Button btnSaltar = findViewById(R.id.btn_back_to_main);
         etEmail = findViewById(R.id.et_email);
         etPassword = findViewById(R.id.et_password);
         btnLogin = findViewById(R.id.btn_login);
         btnForgot = findViewById(R.id.btn_forgot_password);
 
-        // 2. Configuración del botón de Login
         if (btnLogin != null) {
             btnLogin.setOnClickListener(v -> {
                 String email = etEmail.getText().toString().trim();
@@ -43,14 +42,18 @@ public class ActivityLogin extends AppCompatActivity {
             });
         }
 
-        // 3. Configuración del botón Forgot
         if (btnForgot != null) {
             btnForgot.setOnClickListener(v -> {
-                // Esto ya no fallará porque ya lo agregamos al Manifest
                 Intent intent = new Intent(ActivityLogin.this, ActivityForgotPassword.class);
                 startActivity(intent);
             });
         }
+        btnSaltar.setOnClickListener(v -> {
+            Intent intent = new Intent(ActivityLogin.this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish();
+        });
     }
 
     private void iniciarSesion(String email, String pass) {

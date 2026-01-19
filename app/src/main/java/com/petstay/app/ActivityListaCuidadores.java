@@ -40,7 +40,7 @@ public class ActivityListaCuidadores extends AppCompatActivity {
                         Cuidador c = doc.toObject(Cuidador.class);
                         listaCuidadores.add(c);
                     }
-                    adapter = new CuidadorAdapter(listaCuidadores);
+                    adapter = new CuidadorAdapter(listaCuidadores, this);
                     recyclerView.setAdapter(adapter);
                 });
     }

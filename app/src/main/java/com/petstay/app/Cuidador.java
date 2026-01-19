@@ -6,7 +6,7 @@ public class Cuidador {
     private String acepta;
     private String capacidad;
 
-    // Constructor vacío requerido por Firebase
+
     public Cuidador() {}
 
     public Cuidador(String nombre, String ciudad, String acepta, String capacidad) {

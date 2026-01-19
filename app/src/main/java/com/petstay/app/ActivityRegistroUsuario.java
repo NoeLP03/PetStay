@@ -21,9 +21,8 @@ public class ActivityRegistroUsuario extends AppCompatActivity {
     private EditText editEmailUsuario;
     private EditText editPasswordUsuario;
     private EditText editTelefonoUsuario;
-    private Button btnRegistrarUsuario;
+    private Button btnRegistrarUsuario, btnVolver;
 
-    // Instancias de Firebase
     private FirebaseAuth mAuth;
     private FirebaseFirestore mFirestore;
 
@@ -32,11 +31,10 @@ public class ActivityRegistroUsuario extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro_usuario);
 
-        // Inicializar Firebase
         mAuth = FirebaseAuth.getInstance();
         mFirestore = FirebaseFirestore.getInstance();
 
-        // Inicializar Vistas
+        Button btnVolver = findViewById(R.id.btnVolverInicioUsuario);
         editNombreUsuario = findViewById(R.id.editNombreUsuario);
         editEmailUsuario = findViewById(R.id.editEmailUsuario);
         editPasswordUsuario = findViewById(R.id.editPasswordUsuario);
@@ -48,6 +46,10 @@ public class ActivityRegistroUsuario extends AppCompatActivity {
             public void onClick(View v) {
                 registrarUsuario();
             }
+        });
+
+        btnVolver.setOnClickListener(v -> {
+            finish();
         });
     }
 

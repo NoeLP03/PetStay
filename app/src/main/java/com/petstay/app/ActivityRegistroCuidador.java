@@ -13,14 +13,14 @@ public class ActivityRegistroCuidador extends AppCompatActivity {
 
     private EditText txtNombre, txtEmail, txtPassword, txtTelefono, txtCurp, txtColonia, txtCalle, txtNumCasa, txtCP;
     private Spinner spinnerCiudad;
-    private Button btnSiguiente;
+    private Button btnSiguiente, btnVolver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrar_cuidador);
 
-        // Vincular vistas
+        Button btnVolver = findViewById(R.id.btnVolverInicio);
         txtNombre = findViewById(R.id.editNombre);
         txtEmail = findViewById(R.id.editEmail);
         txtPassword = findViewById(R.id.editPassword);
@@ -31,9 +31,8 @@ public class ActivityRegistroCuidador extends AppCompatActivity {
         txtNumCasa = findViewById(R.id.editNumeroCasa);
         txtCP = findViewById(R.id.editCP);
         spinnerCiudad = findViewById(R.id.spinnerCiudad);
-        btnSiguiente = findViewById(R.id.btnRegistrar); // Este es tu botón que ahora dice "Siguiente"
+        btnSiguiente = findViewById(R.id.btnRegistrar);
 
-        // Configurar Spinner de Sinaloa
         String[] ciudades = {"Culiacán", "Mazatlán", "Los Mochis", "Guasave", "Guamúchil", "Navolato", "Escuinapa"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, ciudades);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -43,6 +42,10 @@ public class ActivityRegistroCuidador extends AppCompatActivity {
             if (validarCampos()) {
                 irAlPaso2();
             }
+        });
+
+        btnVolver.setOnClickListener(v -> {
+            finish();
         });
     }
 
@@ -65,7 +68,6 @@ public class ActivityRegistroCuidador extends AppCompatActivity {
     private void irAlPaso2() {
         Intent intent = new Intent(this, ActivityRegistroCuidadorPaso2.class);
 
-        // Pasar todos los datos
         intent.putExtra("nombre", txtNombre.getText().toString());
         intent.putExtra("email", txtEmail.getText().toString());
         intent.putExtra("password", txtPassword.getText().toString());

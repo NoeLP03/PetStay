@@ -1,5 +1,6 @@
 package com.petstay.app;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +13,12 @@ import java.util.List;
 public class CuidadorAdapter extends RecyclerView.Adapter<CuidadorAdapter.ViewHolder> {
 
     private List<Cuidador> listaCuidadores;
+    private Context context;
 
-    public CuidadorAdapter(List<Cuidador> listaCuidadores) {
+
+    public CuidadorAdapter(List<Cuidador> listaCuidadores, Context context) {
         this.listaCuidadores = listaCuidadores;
+        this.context = context;
     }
 
     @NonNull

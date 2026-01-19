@@ -24,7 +24,7 @@ public class ActivityCita extends AppCompatActivity {
     private EditText etNombreDueno, etNombreMascota, etRaza, etTiempoCuidado, etFechaCita;
     private Spinner spinnerTipo, spinnerTamano, spinnerCuidador, spinnerCantidad;
     private TextView tvAvisoNoDisponible;
-    private Button btnRegister;
+    private Button btnRegister, btnRegresarMain;
     private FirebaseFirestore mFirestore;
     private FirebaseAuth mAuth;
     private List<String> listaIdsCuidadores = new ArrayList<>();
@@ -41,6 +41,7 @@ public class ActivityCita extends AppCompatActivity {
 
         nombreRecibidoDeLista = getIntent().getStringExtra("nombre_cuidador");
 
+        Button btnRegresarMain = findViewById(R.id.btnRegresarMain);
         etFechaCita = findViewById(R.id.etFechaCita);
         etFechaCita.setOnClickListener(v -> mostrarCalendario());
         etNombreDueno = findViewById(R.id.etNombreDueno);
@@ -72,6 +73,9 @@ public class ActivityCita extends AppCompatActivity {
         spinnerTamano.setOnItemSelectedListener(filtroListener);
 
         btnRegister.setOnClickListener(v -> validarYRegistrarCita());
+        btnRegresarMain.setOnClickListener(v -> {
+            finish();
+        });
     }
 
     private void mostrarCalendario() {
@@ -195,8 +199,7 @@ public class ActivityCita extends AppCompatActivity {
         cita.put("estado", "pendiente");
 
         mFirestore.collection("Citas").add(cita).addOnSuccessListener(documentReference -> {
-            // AQUÍ LLAMAREMOS A LA FUNCIÓN DE CORREO
-            String emailC = ""; // Aquí deberías obtener el email del cuidador seleccionado
+            String emailC = "";
             String mensaje = "Hola, tienes una nueva solicitud de " + etNombreDueno.getText().toString() +
                     " para cuidar a su mascota: " + mascota;
 

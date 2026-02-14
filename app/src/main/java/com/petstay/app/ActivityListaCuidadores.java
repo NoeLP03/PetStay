@@ -58,10 +58,14 @@ public class ActivityListaCuidadores extends AppCompatActivity implements Naviga
         recyclerView = findViewById(R.id.rvCuidadores);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Inicializamos la lista y el adaptador de una vez
+        listaCuidadores = new ArrayList<>();
+        adapter = new CuidadorAdapter(listaCuidadores, this);
+        recyclerView.setAdapter(adapter);
+
         obtenerCuidadores();
     }
 
-    // Lógica para los clics del menú lateral
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -72,9 +76,7 @@ public class ActivityListaCuidadores extends AppCompatActivity implements Naviga
         } else if (id == R.id.nav_perf) {
             startActivity(new Intent(this, ActivityPerfil.class));
         } else if (id == R.id.nav_logout) {
-            mAuth.signOut();
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
+            cerrarSesion();
         } else if (id == R.id.nav_login) {
             startActivity(new Intent(this, ActivityLogin.class));
         }
@@ -83,10 +85,21 @@ public class ActivityListaCuidadores extends AppCompatActivity implements Naviga
         return true;
     }
 
+    private void cerrarSesion() {
+        mAuth.signOut();
+        Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
+
     private void actualizarMenu() {
         if (navigationView != null) {
             Menu menu = navigationView.getMenu();
             FirebaseUser user = mAuth.getCurrentUser();
+
+            // Si hay usuario, ocultamos Login/Registro y mostramos Perfil/Logout
             menu.findItem(R.id.nav_login).setVisible(user == null);
             menu.findItem(R.id.nav_register).setVisible(user == null);
             menu.findItem(R.id.nav_logout).setVisible(user != null);
@@ -98,20 +111,28 @@ public class ActivityListaCuidadores extends AppCompatActivity implements Naviga
     protected void onResume() {
         super.onResume();
         actualizarMenu();
+        // Recargamos por si algún cuidador actualizó sus datos
+        obtenerCuidadores();
     }
 
     private void obtenerCuidadores() {
-        listaCuidadores = new ArrayList<>();
         mFirestore.collection("Usuarios")
                 .whereEqualTo("rol", "cuidador")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
+                    listaCuidadores.clear();
                     for (DocumentSnapshot doc : queryDocumentSnapshots) {
                         Cuidador c = doc.toObject(Cuidador.class);
-                        listaCuidadores.add(c);
+                        if (c != null) {
+                            // IMPORTANTE: Seteamos el ID manualmente desde el documento
+                            c.setId(doc.getId());
+                            listaCuidadores.add(c);
+                        }
                     }
-                    adapter = new CuidadorAdapter(listaCuidadores, this);
-                    recyclerView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Error al cargar la lista", Toast.LENGTH_SHORT).show();
                 });
     }
 }

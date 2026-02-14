@@ -15,7 +15,6 @@ public class CuidadorAdapter extends RecyclerView.Adapter<CuidadorAdapter.ViewHo
     private List<Cuidador> listaCuidadores;
     private Context context;
 
-
     public CuidadorAdapter(List<Cuidador> listaCuidadores, Context context) {
         this.listaCuidadores = listaCuidadores;
         this.context = context;
@@ -31,16 +30,19 @@ public class CuidadorAdapter extends RecyclerView.Adapter<CuidadorAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Cuidador cuidador = listaCuidadores.get(position);
+
         holder.txtNombre.setText(cuidador.getNombre());
         holder.txtCiudad.setText("📍 " + cuidador.getCiudad());
         holder.txtDetalles.setText("🐾 Acepta: " + cuidador.getAcepta() + " | Capacidad: " + cuidador.getCapacidad());
 
-        // --- AQUÍ AGREGAMOS EL CLIC ---
+        // --- CLIC ACTUALIZADO AL PERFIL ---
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(v.getContext(), ActivityCita.class);
-            // "nombre_cuidador" es la llave para identificar el dato
-            intent.putExtra("nombre_cuidador", cuidador.getNombre());
-            v.getContext().startActivity(intent);
+            Intent intent = new Intent(context, ActivityPerfilCuidador.class);
+
+            // Pasamos el ID del cuidador para que el perfil sepa a quién mostrar
+            intent.putExtra("cuidadorId", cuidador.getId());
+
+            context.startActivity(intent);
         });
     }
 

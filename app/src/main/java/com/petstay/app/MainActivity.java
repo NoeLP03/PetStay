@@ -32,11 +32,11 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
-
     private RecyclerView recyclerView;
     private CuidadorAdapter adaptador;
     private List<Cuidador> listaCuidadores;
     private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,20 +44,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
+        // Inicializar Firebase
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
+        // Referencias de UI
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.NaviView);
         Toolbar toolbar = findViewById(R.id.BarraHe);
 
+        // Configuración de Insets para diseño Edge-to-Edge
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.drawer_layout), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
+        // Configuración de Toolbar y Navigation Drawer
         toolbar.setNavigationOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
         navigationView.setNavigationItemSelectedListener(this);
 
+        // Manejo del botón atrás (Moderno)
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -71,21 +78,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-
-        db = FirebaseFirestore.getInstance();
-
+        // Configuración de RecyclerView
         recyclerView = findViewById(R.id.recyclerCuidadores);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         listaCuidadores = new ArrayList<>();
-        adaptador = new CuidadorAdapter(listaCuidadores,  this);
+        // Pasamos 'this' como contexto para que el adaptador pueda iniciar nuevas actividades
+        adaptador = new CuidadorAdapter(listaCuidadores, this);
         recyclerView.setAdapter(adaptador);
 
         cargarCuidadoresDesdeFirebase();
     }
 
     private void cargarCuidadoresDesdeFirebase() {
-
         db.collection("Usuarios")
                 .whereEqualTo("rol", "cuidador")
                 .get()
@@ -93,18 +98,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     if (task.isSuccessful()) {
                         listaCuidadores.clear();
                         for (QueryDocumentSnapshot document : task.getResult()) {
-
+                            // Extraer datos del documento
                             String nombre = document.getString("nombre");
                             String ciudad = document.getString("ciudad");
                             String acepta = document.getString("acepta");
                             String capacidad = document.getString("capacidad");
 
-                            Cuidador c = new Cuidador(nombre, ciudad, capacidad, acepta);
+                            // IMPORTANTE: Obtenemos el ID único del documento (UID del usuario)
+                            String id = document.getId();
+
+                            // Crear objeto Cuidador usando el nuevo constructor que incluye el ID
+                            Cuidador c = new Cuidador(id, nombre, ciudad, acepta, capacidad);
+
                             listaCuidadores.add(c);
                         }
                         adaptador.notifyDataSetChanged();
                     } else {
                         Log.e("FirestoreError", "Error al obtener datos", task.getException());
+                        Toast.makeText(this, "Error al cargar cuidadores", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -129,11 +140,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             cerrarSesion();
         }
         else if (id == R.id.nav_cita) {
+            // Esta opción ahora podría ir a una lista de citas del usuario
             startActivity(new Intent(this, ActivityCita.class));
         }
         else if (id == R.id.nav_cui) {
-            Intent intent = new Intent(MainActivity.this, ActivityListaCuidadores.class);
-            startActivity(intent);
+            startActivity(new Intent(this, ActivityListaCuidadores.class));
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -141,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void cerrarSesion() {
-        FirebaseAuth.getInstance().signOut();
+        mAuth.signOut();
         Toast.makeText(this, "Sesión cerrada correctamente", Toast.LENGTH_SHORT).show();
 
         Intent intent = new Intent(this, MainActivity.class);
@@ -154,13 +165,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.NaviView);
         if (navigationView != null) {
             Menu menu = navigationView.getMenu();
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            FirebaseUser user = mAuth.getCurrentUser();
 
             MenuItem loginItem = menu.findItem(R.id.nav_login);
             MenuItem registerItem = menu.findItem(R.id.nav_register);
             MenuItem logoutItem = menu.findItem(R.id.nav_logout);
             MenuItem profileItem = menu.findItem(R.id.nav_perf);
 
+            // Ajustar visibilidad según el estado de la sesión
             if (user != null) {
                 if (loginItem != null) loginItem.setVisible(false);
                 if (registerItem != null) registerItem.setVisible(false);
@@ -179,5 +191,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onResume() {
         super.onResume();
         actualizarMenu();
+        // Opcional: Recargar lista por si hubo cambios
+        cargarCuidadoresDesdeFirebase();
     }
 }

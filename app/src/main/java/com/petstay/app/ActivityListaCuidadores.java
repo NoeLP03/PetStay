@@ -87,12 +87,13 @@ public class ActivityListaCuidadores extends AppCompatActivity implements Naviga
 
     private void cerrarSesion() {
         mAuth.signOut();
-        Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        Toast.makeText(this, "Sesión cerrada correctamente", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, ActivityLogOut.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }
+
 
     private void actualizarMenu() {
         if (navigationView != null) {

@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="48dp"
-        android:text="Tu cuenta ha sido creada correctamente en la base de datos."
+        android:text="Tu cuenta de cuidador ha sido creada correctamente en la base de datos."
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="30sp" />

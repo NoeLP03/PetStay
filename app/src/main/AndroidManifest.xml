@@ -26,7 +26,6 @@
 
         <activity android:name="com.petstay.app.ActivityLogin" android:exported="true"/>
         <activity android:name="com.petstay.app.ActivityRegistroCuidador" android:exported="true"/>
-
         <activity android:name="com.petstay.app.ActivityRegistroUsuario" android:exported="true"/>
         <activity android:name="com.petstay.app.ActivitySelectionRol" android:exported="true"/>
         <activity android:name="com.petstay.app.ActivityRegistroExitoso" android:exported="false" />
@@ -36,6 +35,9 @@
         <activity android:name="com.petstay.app.ActivityRegistroCuidadorPaso2" />
         <activity android:name="com.petstay.app.ActivityListaCuidadores" android:exported="false" />
         <activity android:name="com.petstay.app.ActivityPerfilCuidador" android:screenOrientation="portrait" />
+        <activity android:name="com.petstay.app.ActivityRegistroCuidadorExitoso" android:exported="false" />
+        <activity android:name="com.petstay.app.ActivityLogOut" android:exported="false"/>
+
     </application>
 
 </manifest>

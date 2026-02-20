@@ -78,6 +78,16 @@ public class ActivityPerfil extends AppCompatActivity implements NavigationView.
         return true;
     }
 
+    private void cerrarSesion() {
+        mAuth.signOut();
+        Toast.makeText(this, "Sesión cerrada correctamente", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, ActivityLogOut.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+
     private void actualizarMenu() {
         if (navigationView != null) {
             Menu menu = navigationView.getMenu();

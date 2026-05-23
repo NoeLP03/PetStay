@@ -34,7 +34,7 @@ public class ActivityCita extends AppCompatActivity implements NavigationView.On
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-    private EditText etNombreDueno, etNombreMascota, etRaza, etTiempoCuidado, etFechaCita;
+    private EditText etNombreDueno, etNombreMascota, etRaza, etTiempoCuidado, etFechaCita, etDescripcionCuidados;
     private Spinner spinnerTipo, spinnerTamano, spinnerCuidador, spinnerCantidad;
     private TextView tvAvisoNoDisponible;
     private Button btnRegister;
@@ -74,12 +74,13 @@ public class ActivityCita extends AppCompatActivity implements NavigationView.On
         etNombreMascota = findViewById(R.id.etNombreMascota);
         etRaza = findViewById(R.id.etRaza);
         etTiempoCuidado = findViewById(R.id.etTiempoCuidado);
+        etDescripcionCuidados = findViewById(R.id.etDescripcionCuidados); // <-- Vinculado
         spinnerTipo = findViewById(R.id.spinnerTipoCita);
         spinnerTamano = findViewById(R.id.spinnerTamanoCita);
         spinnerCuidador = findViewById(R.id.spinnerCuidador);
         tvAvisoNoDisponible = findViewById(R.id.tvAvisoNoDisponible);
         btnRegister = findViewById(R.id.btnRegister);
-        spinnerCantidad = findViewById(R.id.spinnerCantidadMascotas);
+        spinnerCantidad = findViewById(R.id.spinnerQuantityMascotas);
 
         // --- CARGAR DATOS ---
         cargarNombreUsuario();
@@ -120,6 +121,9 @@ public class ActivityCita extends AppCompatActivity implements NavigationView.On
             cerrarSesion();
         } else if (id == R.id.nav_cui) {
             startActivity(new Intent(this, ActivityListaCuidadores.class));
+        }
+        else if (id == R.id.nav_historial) {
+            startActivity(new Intent(this, ActivityHistorial.class));
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -236,15 +240,16 @@ public class ActivityCita extends AppCompatActivity implements NavigationView.On
         String raza = etRaza.getText().toString().trim();
         String tiempo = etTiempoCuidado.getText().toString().trim();
         String fecha = etFechaCita.getText().toString().trim();
+        String descripcion = etDescripcionCuidados.getText().toString().trim(); // <-- Leer el campo nuevo
 
         if (listaIdsCuidadores.isEmpty() || mascota.isEmpty() || raza.isEmpty() || tiempo.isEmpty() || fecha.isEmpty()) {
-            Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Completa todos los campos obligatorios", Toast.LENGTH_SHORT).show();
         } else {
-            registrarCitaEnFirestore(mascota, raza, tiempo);
+            registrarCitaEnFirestore(mascota, raza, tiempo, descripcion); // <-- Se envía la descripción
         }
     }
 
-    private void registrarCitaEnFirestore(String mascota, String raza, String tiempo) {
+    private void registrarCitaEnFirestore(String mascota, String raza, String tiempo, String descripcion) {
         String idDueno = mAuth.getCurrentUser().getUid();
         int pos = spinnerCuidador.getSelectedItemPosition();
         String idCuidador = listaIdsCuidadores.get(pos);
@@ -260,6 +265,7 @@ public class ActivityCita extends AppCompatActivity implements NavigationView.On
         cita.put("tipoMascota", spinnerTipo.getSelectedItem().toString());
         cita.put("tamanoMascota", spinnerTamano.getSelectedItem().toString());
         cita.put("tiempoCuidado", tiempo);
+        cita.put("descripcionCuidados", descripcion); // <-- Guardado en Firebase
         cita.put("estado", "pendiente");
 
         mFirestore.collection("Citas").add(cita).addOnSuccessListener(documentReference -> {

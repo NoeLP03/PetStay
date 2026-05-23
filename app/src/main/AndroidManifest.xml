@@ -37,6 +37,7 @@
         <activity android:name="com.petstay.app.ActivityPerfilCuidador" android:screenOrientation="portrait" />
         <activity android:name="com.petstay.app.ActivityRegistroCuidadorExitoso" android:exported="false" />
         <activity android:name="com.petstay.app.ActivityLogOut" android:exported="false"/>
+        <activity android:name="com.petstay.app.ActivityHistorial" android:exported="false" />
 
     </application>
 

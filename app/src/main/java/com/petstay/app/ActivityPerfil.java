@@ -96,6 +96,7 @@ public class ActivityPerfil extends AppCompatActivity implements NavigationView.
             menu.findItem(R.id.nav_register).setVisible(user == null);
             menu.findItem(R.id.nav_logout).setVisible(user != null);
             menu.findItem(R.id.nav_perf).setVisible(user != null);
+            menu.findItem(R.id.nav_historial).setVisible(user != null);
         }
     }
 

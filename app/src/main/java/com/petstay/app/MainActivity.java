@@ -146,6 +146,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else if (id == R.id.nav_cui) {
             startActivity(new Intent(this, ActivityListaCuidadores.class));
         }
+        else if (id == R.id.nav_historial) {
+            startActivity(new Intent(this, ActivityHistorial.class));
+        }
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;

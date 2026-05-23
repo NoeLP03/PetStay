@@ -90,7 +90,7 @@
                     android:textStyle="bold"/>
 
                 <Spinner
-                    android:id="@+id/spinnerCantidadMascotas"
+                    android:id="@+id/spinnerQuantityMascotas"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="48dp" />
@@ -135,6 +135,18 @@
                     android:clickable="true"
                     android:layout_marginTop="12dp"
                     android:drawableEnd="@android:drawable/ic_menu_my_calendar"/>
+
+                <!-- NUEVO CAMPO: DESCRIPCIÓN DE CUIDADOS -->
+                <EditText
+                    android:id="@+id/etDescripcionCuidados"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:hint="Descripción de cuidados (ej. Medicamentos, alergias, horarios de comida...)"
+                    android:inputType="textMultiLine"
+                    android:minLines="3"
+                    android:gravity="top"
+                    android:background="@android:drawable/edit_text"/>
 
                 <Button
                     android:id="@+id/btnRegister"
